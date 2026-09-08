@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sally the Snake's Verb Adventure! - P1 English Grammar</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Fredoka & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for playful icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        fredoka: ['Fredoka', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#10B981',
+                        snakeGreen: '#059669',
+                        snakeLight: '#D1FAE5',
+                        funYellow: '#FBBF24',
+                        funPink: '#F472B6',
+                        funBlue: '#60A5FA',
+                        cardBg: '#FFFFFF',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #E6F4EA 0%, #E0F2FE 100%);
+            min-height: 100vh;
+        }
+        .bouncy-card {
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+        }
+        .bouncy-card:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.1);
+        }
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+        .animate-float {
+            animation: floatSlow 3s ease-in-out infinite;
+        }
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+        .animate-wiggle {
+            animation: wiggle 0.6s ease-in-out infinite;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #10B981;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="text-slate-700 flex flex-col min-h-screen">
+
+    <header class="bg-white/90 backdrop-blur-md shadow-md sticky top-0 z-50 px-4 py-3">
+        <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-emerald-500 text-white p-3 rounded-2xl shadow-md text-2xl animate-float">
+                    🐍
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold text-emerald-800 tracking-wide">Sally the Snake's Verbs</h1>
+                    <p class="text-xs text-slate-500">Primary 1 English Grammar Adventure</p>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <nav class="flex items-center space-x-2 bg-slate-100 p-1.5 rounded-2xl">
+                <button onclick="switchTab('deck')" id="nav-deck" class="tab-btn px-5 py-2.5 rounded-xl font-semibold text-sm transition-all bg-emerald-600 text-white shadow">
+                    <i class="fa-solid fa-book-open mr-1.5"></i> Learning Deck
+                </button>
+                <button onclick="switchTab('practice')" id="nav-practice" class="tab-btn px-5 py-2.5 rounded-xl font-semibold text-sm transition-all text-slate-600 hover:text-emerald-700">
+                    <i class="fa-solid fa-gamepad mr-1.5"></i> Practice Game
+                </button>
+            </nav>
+
+            <!-- Player Status / Rewards Badge -->
+            <div class="flex items-center space-x-3 bg-emerald-50 border border-emerald-200 px-4 py-2 rounded-2xl shadow-sm">
+                <div class="text-xl">⭐</div>
+                <div>
+                    <div class="text-xs text-emerald-600 font-bold uppercase">Stars Earned</div>
+                    <div id="header-stars" class="text-lg font-extrabold text-emerald-800">0</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN APP CONTAINER -->
+    <main class="flex-grow max-w-6xl w-full mx-auto p-4 md:p-6">
+
+        <!-- ================= LEARNING DECK VIEW ================= -->
+        <section id="view-deck" class="view-section space-y-6">
+            <!-- Hero / Welcome Banner -->
+            <div class="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-3xl p-6 md:p-8 text-white shadow-xl relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 opacity-20 text-9xl">🐍</div>
+                <div class="max-w-2xl relative z-10 space-y-4">
+                    <span class="bg-white/20 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-sm">Story Time & Grammar Rules</span>
+                    <h2 class="text-3xl md:text-4xl font-extrabold">Meet Sally the Snake! 🐍</h2>
+                    <p class="text-emerald-100 text-base md:text-lg leading-relaxed">
+                        Sally loves grammar! When there is only <strong>one</strong> person, thing, or animal, Sally <strong>attacks</strong> (the verb gets an <span class="bg-yellow-300 text-emerald-900 px-2 py-0.5 rounded-lg font-bold">‘s’</span>!). When there are <strong>many</strong>, or when you use <strong>"I"</strong> or <strong>"You"</strong>, Sally runs away!
+                    </p>
+                    <div class="flex flex-wrap gap-3 pt-2">
+                        <button onclick="playTTS('Meet Sally the Snake! When there is only one person, thing, or animal, Sally attacks and the verb gets an s! When there are many, or when you use I and You, Sally runs away!')" class="bg-white text-emerald-700 px-4 py-2 rounded-xl font-bold shadow hover:bg-emerald-50 transition flex items-center gap-2">
+                            <i class="fa-solid fa-volume-high"></i> Listen to Story Intro
+                        </button>
+                        <button onclick="switchTab('practice')" class="bg-funYellow text-slate-900 px-5 py-2 rounded-xl font-bold shadow hover:bg-yellow-400 transition flex items-center gap-2">
+                            <i class="fa-solid fa-play"></i> Start Practice Game
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Animation Stage Demo for Sally's Rules -->
+            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-xl border-2 border-emerald-200 space-y-6">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div>
+                        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full uppercase"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Interactive Stage Demo</span>
+                        <h3 class="text-2xl font-bold text-slate-800 mt-1">Watch Sally in Action!</h3>
+                        <p class="text-slate-600 text-sm">Click the buttons below to trigger Sally's special animations and see what happens to the verb!</p>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="triggerAnimation('attack')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-3 rounded-2xl shadow transition flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-bolt"></i> 1 Singular (Attack!)
+                        </button>
+                        <button onclick="triggerAnimation('runPlural')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded-2xl shadow transition flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-person-running"></i> 2+ Plural (Run Away!)
+                        </button>
+                        <button onclick="triggerAnimation('runSuper')" class="bg-pink-600 hover:bg-pink-700 text-white font-bold px-4 py-3 rounded-2xl shadow transition flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-shield-heart"></i> I/You (Run Away!)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stage Container -->
+                <div class="bg-slate-900 rounded-2xl p-6 md:p-10 relative overflow-hidden min-h-[220px] flex flex-col items-center justify-center text-center shadow-inner">
+                    <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#10B981_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                    
+                    <div id="stage-sentence" class="relative z-10 text-white text-2xl md:text-3xl font-extrabold flex items-center justify-center gap-3 flex-wrap">
+                        <span id="stage-subject" class="bg-white/10 px-4 py-2 rounded-xl text-emerald-300">The cat</span>
+                        <div id="stage-verb-box" class="relative inline-block transition-transform duration-300">
+                            <span id="stage-verb" class="bg-white/10 px-4 py-2 rounded-xl text-yellow-300">sleep</span>
+                            <span id="stage-s-badge" class="absolute -right-3 -top-3 bg-yellow-400 text-slate-900 text-sm font-extrabold px-2 py-0.5 rounded-full scale-0 transition-transform duration-300 shadow-lg">+s</span>
+                        </div>
+                    </div>
+
+                    <div id="stage-sally" class="absolute text-5xl md:text-6xl transition-all duration-700 ease-in-out left-6 bottom-6 z-20">
+                        🐍
+                    </div>
+
+                    <div id="stage-narrator" class="absolute bottom-3 text-xs md:text-sm font-bold text-slate-300 bg-black/40 px-4 py-1.5 rounded-full backdrop-blur-sm z-10">
+                        Click a button above to watch Sally react!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Slides Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Slide 1: Rule 1 -->
+                <div class="bg-white rounded-3xl p-6 shadow-lg border-2 border-emerald-100 bouncy-card flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">Rule #1</span>
+                            <button onclick="playTTS('Rule 1. One person, thing, or animal. Sally the Snake attacks. The verb needs an s! Example, The cat sleeps.')" class="text-emerald-600 hover:text-emerald-800 p-2"><i class="fa-solid fa-volume-high text-lg"></i></button>
+                        </div>
+                        <div class="text-center py-6 bg-emerald-50 rounded-2xl mb-4 text-5xl animate-float">
+                            🐱💤
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">Only ONE (Singular)</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            When the subject is singular (just 1), Sally attacks! We add an <strong class="text-emerald-600">‘s’</strong> to the action verb.
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <div class="text-xs font-bold text-slate-400 uppercase mb-1">Example:</div>
+                        <div class="font-bold text-slate-800 text-base">The cat <span class="text-emerald-600 underline decoration-2">sleeps</span>.</div>
+                        <div class="text-xs text-slate-500 mt-1">1 cat = add 's'!</div>
+                    </div>
+                </div>
+
+                <!-- Slide 2: Rule 2 -->
+                <div class="bg-white rounded-3xl p-6 shadow-lg border-2 border-blue-100 bouncy-card flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full">Rule #2</span>
+                            <button onclick="playTTS('Rule 2. Two or more people, things, or animals. Sally the Snake runs away. The verb does NOT have an s! Example, The cats sleep.')" class="text-blue-600 hover:text-blue-800 p-2"><i class="fa-solid fa-volume-high text-lg"></i></button>
+                        </div>
+                        <div class="text-center py-6 bg-blue-50 rounded-2xl mb-4 text-5xl animate-float">
+                            🐈🐈💨
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">More than ONE (Plural)</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            When there are 2 or more subjects, Sally runs away! The action verb does <strong>NOT</strong> get an ‘s’.
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <div class="text-xs font-bold text-slate-400 uppercase mb-1">Example:</div>
+                        <div class="font-bold text-slate-800 text-base">The cats <span class="text-blue-600 underline decoration-2">sleep</span>.</div>
+                        <div class="text-xs text-slate-500 mt-1">2+ cats = NO 's'!</div>
+                    </div>
+                </div>
+
+                <!-- Slide 3: Rule 3 -->
+                <div class="bg-white rounded-3xl p-6 shadow-lg border-2 border-pink-100 bouncy-card flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="bg-pink-100 text-pink-800 text-xs font-bold px-3 py-1 rounded-full">Superpower Rule</span>
+                            <button onclick="playTTS('Superpower Rule. I and You have superpowers! Even though I and You are just one person, Sally the Snake still runs away. Example, I run, You jump.')" class="text-pink-600 hover:text-pink-800 p-2"><i class="fa-solid fa-volume-high text-lg"></i></button>
+                        </div>
+                        <div class="text-center py-6 bg-pink-50 rounded-2xl mb-4 text-5xl animate-float">
+                            🦸‍♂️✨
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">"I" & "You" Superpowers!</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            Even though <strong>"I"</strong> and <strong>"You"</strong> are singular, they have superpowers! Sally runs away from them too. No ‘s’!
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <div class="text-xs font-bold text-slate-400 uppercase mb-1">Examples:</div>
+                        <div class="font-bold text-slate-800 text-sm">I <span class="text-pink-600">run</span>. | You <span class="text-pink-600">jump</span>.</div>
+                        <div class="text-xs text-slate-500 mt-1">Special rule for I and You!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Interactive Demo Box -->
+            <div class="bg-white rounded-3xl p-6 shadow-lg border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-2 text-center md:text-left">
+                    <span class="text-xs font-bold text-emerald-600 uppercase">Interactive Check</span>
+                    <h3 class="text-2xl font-bold text-slate-800">Test Your Knowledge Before Playing!</h3>
+                    <p class="text-slate-600 text-sm">Choose the correct verb for: <strong class="text-slate-800">"The dog ___ (bark / barks)"</strong></p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="checkDemoAnswer('bark', this)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-6 py-3 rounded-2xl transition shadow-sm">bark</button>
+                    <button onclick="checkDemoAnswer('barks', this)" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-2xl transition shadow-md">barks</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PRACTICE GAME VIEW ================= -->
+        <section id="view-practice" class="view-section hidden space-y-6">
+            <!-- Game Setup Screen -->
+            <div id="game-setup" class="bg-white rounded-3xl p-8 shadow-xl border border-slate-200 max-w-2xl mx-auto text-center space-y-6">
+                <div class="inline-block bg-emerald-100 text-emerald-800 p-4 rounded-3xl text-4xl animate-wiggle">
+                    🎮
+                </div>
+                <div class="space-y-2">
+                    <h2 class="text-3xl font-extrabold text-slate-800">Sally's Verb Challenge!</h2>
+                    <p class="text-slate-600">Choose your difficulty level and help Sally decide whether to attack or run away!</p>
+                </div>
+
+                <!-- Difficulty Selectors -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
+                    <button onclick="setDifficulty('easy')" id="diff-easy" class="diff-btn border-2 border-emerald-500 bg-emerald-50 p-4 rounded-2xl text-left transition hover:shadow-md">
+                        <div class="text-xl mb-1">🌱</div>
+                        <div class="font-bold text-emerald-900 text-lg">Easy</div>
+                        <div class="text-xs text-emerald-600">No timer, gentle hints, 5 questions</div>
+                    </button>
+                    <button onclick="setDifficulty('medium')" id="diff-medium" class="diff-btn border-2 border-slate-200 p-4 rounded-2xl text-left transition hover:shadow-md hover:border-emerald-300">
+                        <div class="text-xl mb-1">⭐</div>
+                        <div class="font-bold text-slate-800 text-lg">Medium</div>
+                        <div class="text-xs text-slate-500">15s timer per question, 8 questions</div>
+                    </button>
+                    <button onclick="setDifficulty('challenge')" id="diff-challenge" class="diff-btn border-2 border-slate-200 p-4 rounded-2xl text-left transition hover:shadow-md hover:border-emerald-300">
+                        <div class="text-xl mb-1">🔥</div>
+                        <div class="font-bold text-slate-800 text-lg">Challenge</div>
+                        <div class="text-xs text-slate-500">10s timer, tricky sentences, 10 questions</div>
+                    </button>
+                </div>
+
+                <button onclick="startGame()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-extrabold text-lg py-4 rounded-2xl shadow-lg hover:from-emerald-600 hover:to-teal-700 transition transform hover:-translate-y-0.5">
+                    <i class="fa-solid fa-rocket mr-2"></i> Start Mission!
+                </button>
+            </div>
+
+            <!-- Active Gameplay Container -->
+            <div id="game-play" class="hidden max-w-2xl mx-auto space-y-6">
+                <!-- Game Header Status Bar -->
+                <div class="bg-white rounded-2xl p-4 shadow-md flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span id="game-progress-badge" class="bg-emerald-100 text-emerald-800 font-bold px-3 py-1 rounded-xl text-sm">Question 1/5</span>
+                        <div id="timer-box" class="hidden items-center space-x-2 text-rose-600 font-bold bg-rose-50 px-3 py-1 rounded-xl text-sm">
+                            <i class="fa-solid fa-stopwatch"></i>
+                            <span id="timer-display">15</span>s
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2 text-amber-500 font-extrabold">
+                        <span>⭐</span> <span id="current-score">0</span> pts
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-slate-200 h-3 rounded-full overflow-hidden">
+                    <div id="game-progress-bar" class="bg-emerald-500 h-full w-0 transition-all duration-300 rounded-full"></div>
+                </div>
+
+                <!-- Question Card -->
+                <div class="bg-white rounded-3xl p-8 shadow-xl border border-slate-200 space-y-6 relative overflow-hidden">
+                    <div class="flex justify-between items-start">
+                        <span id="question-category" class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Singular Subject</span>
+                        <button onclick="readCurrentQuestion()" class="text-emerald-600 hover:text-emerald-800 bg-emerald-50 px-3 py-1.5 rounded-xl font-semibold text-xs flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-volume-high"></i> Read Question
+                        </button>
+                    </div>
+
+                    <div class="text-center py-4 space-y-3">
+                        <div id="question-illustration" class="text-6xl mb-2">🐶</div>
+                        <h3 id="question-text" class="text-2xl md:text-3xl font-extrabold text-slate-800 leading-snug">
+                            The dog _____ in the park.
+                        </h3>
+                    </div>
+
+                    <!-- Options Grid -->
+                    <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                        <!-- Dynamically injected option buttons -->
+                    </div>
+
+                    <!-- Socratic Feedback / Hint Box -->
+                    <div id="feedback-box" class="hidden p-4 rounded-2xl border text-sm animate-fade-in">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Completion / Summary Modal View -->
+            <div id="game-complete" class="hidden bg-white rounded-3xl p-8 shadow-2xl border border-slate-200 max-w-xl mx-auto text-center space-y-6">
+                <div class="text-6xl animate-bounce">🏆</div>
+                <div class="space-y-2">
+                    <h2 class="text-3xl font-extrabold text-slate-800">Mission Accomplished!</h2>
+                    <p class="text-slate-600">Sally the Snake is very happy with your grammar skills!</p>
+                </div>
+
+                <div class="bg-emerald-50 p-6 rounded-2xl border border-emerald-200 grid grid-cols-2 gap-4">
+                    <div>
+                        <div class="text-xs text-emerald-600 uppercase font-bold">Final Score</div>
+                        <div id="final-score-val" class="text-3xl font-extrabold text-emerald-800">0/5</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-emerald-600 uppercase font-bold">Stars Collected</div>
+                        <div id="final-stars-val" class="text-3xl font-extrabold text-amber-500">⭐ 0</div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <button onclick="resetGame()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-2xl shadow transition">
+                        <i class="fa-solid fa-rotate-right mr-2"></i> Play Again
+                    </button>
+                    <button onclick="switchTab('deck')" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3.5 rounded-2xl transition">
+                        <i class="fa-solid fa-book-open mr-2"></i> Review Deck
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // --- Web Audio API Synthesizer ---
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playSound(type) {
+            try {
+                initAudio();
+                if (!audioCtx) return;
+                const now = audioCtx.currentTime;
+
+                if (type === 'success') {
+                    [523.25, 659.25, 783.99, 1046.50].forEach((freq, index) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, now + index * 0.08);
+                        gain.gain.setValueAtTime(0.15, now + index * 0.08);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + index * 0.08 + 0.3);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start(now + index * 0.08);
+                        osc.stop(now + index * 0.08 + 0.3);
+                    });
+                } else if (type === 'retry') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(300, now);
+                    osc.frequency.exponentialRampToValueAtTime(200, now + 0.3);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                } else if (type === 'click') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(600, now);
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.08);
+                } else if (type === 'attack') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(200, now);
+                    osc.frequency.exponentialRampToValueAtTime(600, now + 0.2);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.25);
+                } else if (type === 'run') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(500, now);
+                    osc.frequency.exponentialRampToValueAtTime(150, now + 0.3);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                }
+            } catch (e) {
+                console.log("Audio play error:", e);
+            }
+        }
+
+        // --- Stage Animation Logic ---
+        function triggerAnimation(mode) {
+            playSound('click');
+            const sally = document.getElementById('stage-sally');
+            const narrator = document.getElementById('stage-narrator');
+            const stageSub = document.getElementById('stage-subject');
+            const stageVerb = document.getElementById('stage-verb');
+            const sBadge = document.getElementById('stage-s-badge');
+
+            sally.style.transition = 'none';
+            sally.style.left = '6px';
+            sally.style.transform = 'scale(1)';
+
+            if (mode === 'attack') {
+                stageSub.innerText = "The cat";
+                stageVerb.innerText = "sleep";
+                sBadge.classList.add('scale-0');
+                narrator.innerText = "One cat! Sally the Snake attacks!";
+                playTTS("One cat! Sally the Snake attacks!");
+
+                setTimeout(() => {
+                    playSound('attack');
+                    sally.style.transition = 'left 0.4s ease-in-out, transform 0.2s ease-in-out';
+                    sally.style.left = '52%';
+                    sally.style.transform = 'scale(1.3) rotate(-15deg)';
+                    narrator.innerText = "Sssss! Sally attacks and bites an 's' onto the verb!";
+                    
+                    setTimeout(() => {
+                        sBadge.classList.remove('scale-0');
+                        sBadge.classList.add('animate-bounce');
+                        playSound('success');
+
+                        setTimeout(() => {
+                            sally.style.left = '6px';
+                            sally.style.transform = 'scale(1)';
+                            sBadge.classList.remove('animate-bounce');
+                        }, 800);
+                    }, 400);
+                }, 300);
+
+            } else if (mode === 'runPlural') {
+                stageSub.innerText = "The cats";
+                stageVerb.innerText = "sleep";
+                sBadge.classList.add('scale-0');
+                narrator.innerText = "More than one cat! Sally sees them and runs away!";
+                playTTS("More than one cat! Sally the Snake runs away!");
+
+                setTimeout(() => {
+                    playSound('run');
+                    sally.style.transition = 'left 0.5s ease-in-out, transform 0.3s ease-in-out';
+                    sally.style.left = '85%';
+                    sally.style.transform = 'scale(0.8) rotate(20deg)';
+                    narrator.innerText = "Whoosh! Sally runs away! The verb stays plain with no 's'.";
+                    
+                    setTimeout(() => {
+                        sally.style.left = '6px';
+                        sally.style.transform = 'scale(1)';
+                    }, 800);
+                }, 300);
+
+            } else if (mode === 'runSuper') {
+                stageSub.innerText = "I / You";
+                stageVerb.innerText = "run";
+                sBadge.classList.add('scale-0');
+                narrator.innerText = "I and You have superpowers! Sally runs away!";
+                playTTS("I and You have superpowers! Sally the Snake runs away!");
+
+                setTimeout(() => {
+                    playSound('run');
+                    sally.style.transition = 'left 0.5s ease-in-out, transform 0.3s ease-in-out';
+                    sally.style.left = '85%';
+                    sally.style.transform = 'scale(0.8) rotate(20deg)';
+                    narrator.innerText = "Superpower rule! Sally runs away. No 's' on the verb!";
+                    
+                    setTimeout(() => {
+                        sally.style.left = '6px';
+                        sally.style.transform = 'scale(1)';
+                    }, 800);
+                }, 300);
+            }
+        }
+
+        // --- Text-to-Speech (TTS) ---
+        function playTTS(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.9;
+                utterance.pitch = 1.1;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // --- Navigation Logic ---
+        function switchTab(tabId) {
+            playSound('click');
+            document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('bg-emerald-600', 'text-white', 'shadow');
+                el.classList.add('text-slate-600');
+            });
+
+            document.getElementById('view-' + tabId).classList.remove('hidden');
+            const activeBtn = document.getElementById('nav-' + tabId);
+            activeBtn.classList.add('bg-emerald-600', 'text-white', 'shadow');
+            activeBtn.classList.remove('text-slate-600');
+        }
+
+        // --- Learning Deck Demo Checker ---
+        function checkDemoAnswer(ans, btn) {
+            playSound('click');
+            const allBtns = btn.parentElement.querySelectorAll('button');
+            allBtns.forEach(b => {
+                b.classList.remove('bg-emerald-600', 'text-white', 'bg-rose-500');
+                b.classList.add('bg-slate-100', 'text-slate-800');
+            });
+
+            if (ans === 'barks') {
+                btn.classList.remove('bg-slate-100', 'text-slate-800');
+                btn.classList.add('bg-emerald-600', 'text-white');
+                playSound('success');
+                playTTS('Correct! The dog is singular, so Sally attacks and we add an s!');
+            } else {
+                btn.classList.remove('bg-slate-100', 'text-slate-800');
+                btn.classList.add('bg-rose-500', 'text-white');
+                playSound('retry');
+                playTTS('Close! Remember, there is only one dog, so Sally attacks!');
+            }
+        }
+
+        // --- Practice Game State & Bank ---
+        const defaultQuestions = [
+            {
+                text: "The dog _____ in the park.",
+                category: "Singular Subject",
+                illustration: "🐶",
+                options: ["bark", "barks"],
+                correct: "barks",
+                socraticHint: "Hmm, let's count the dogs! There is only 1 dog. Does Sally attack?"
+            },
+            {
+                text: "The cats _____ on the mat.",
+                category: "Plural Subject",
+                illustration: "🐈🐈",
+                options: ["sleep", "sleeps"],
+                correct: "sleep",
+                socraticHint: "Count the cats! There are 2 cats. Does Sally run away?"
+            },
+            {
+                text: "I _____ ice cream every day.",
+                category: "Superpower Rule (I/You)",
+                illustration: "👦🍦",
+                options: ["eat", "eats"],
+                correct: "eat",
+                socraticHint: "Remember the Superpower rule! 'I' has superpowers so Sally runs away!"
+            },
+            {
+                text: "You _____ very fast!",
+                category: "Superpower Rule (I/You)",
+                illustration: "🏃‍♂️",
+                options: ["run", "runs"],
+                correct: "run",
+                socraticHint: "What is the superpower rule for 'You'? Sally runs away!"
+            },
+            {
+                text: "The clever bird _____ in the sky.",
+                category: "Singular Subject",
+                illustration: "🐦",
+                options: ["fly", "flies"],
+                correct: "flies",
+                socraticHint: "There is only 1 bird! Sally attacks!"
+            },
+            {
+                text: "The children _____ happily.",
+                category: "Plural Subject",
+                illustration: "👦👧👧",
+                options: ["play", "plays"],
+                correct: "play",
+                socraticHint: "Many children! Sally runs away, so no 's'!"
+            },
+            {
+                text: "My mother _____ delicious food.",
+                category: "Singular Subject",
+                illustration: "👩‍🍳",
+                options: ["cook", "cooks"],
+                correct: "cooks",
+                socraticHint: "Mother is just 1 person. Sally attacks!"
+            },
+            {
+                text: "Birds _____ in the trees.",
+                category: "Plural Subject",
+                illustration: "🌳🐦🐦",
+                options: ["sing", "sings"],
+                correct: "sing",
+                socraticHint: "Multiple birds! Sally runs away!"
+            },
+            {
+                text: "He _____ football on Saturdays.",
+                category: "Singular Subject",
+                illustration: "⚽👦",
+                options: ["play", "plays"],
+                correct: "plays",
+                socraticHint: "'He' is 1 boy. Sally attacks!"
+            },
+            {
+                text: "They _____ English very well.",
+                category: "Plural Subject",
+                illustration: "👥📚",
+                options: ["speak", "speaks"],
+                correct: "speak",
+                socraticHint: "'They' means more than one person. Sally runs away!"
+            }
+        ];
+
+        let currentDifficulty = 'easy';
+        let activeQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let totalStars = 0;
+        let timerInterval = null;
+        let timeLeft = 15;
+
+        function setDifficulty(diff) {
+            playSound('click');
+            currentDifficulty = diff;
+            document.querySelectorAll('.diff-btn').forEach(btn => {
+                btn.classList.remove('border-emerald-500', 'bg-emerald-50');
+                btn.classList.add('border-slate-200');
+            });
+            const selected = document.getElementById('diff-' + diff);
+            selected.classList.add('border-emerald-500', 'bg-emerald-50');
+            selected.classList.remove('border-slate-200');
+        }
+
+        function startGame() {
+            playSound('click');
+            const pool = [...defaultQuestions];
+            pool.sort(() => Math.random() - 0.5);
+
+            let qCount = 5;
+            if (currentDifficulty === 'medium') qCount = 8;
+            if (currentDifficulty === 'challenge') qCount = 10;
+
+            activeQuestions = pool.slice(0, Math.min(qCount, pool.length));
+            currentQuestionIndex = 0;
+            score = 0;
+
+            document.getElementById('game-setup').classList.add('hidden');
+            document.getElementById('game-complete').classList.add('hidden');
+            document.getElementById('game-play').classList.remove('hidden');
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (currentQuestionIndex >= activeQuestions.length) {
+                endGame();
+                return;
+            }
+
+            const q = activeQuestions[currentQuestionIndex];
+            document.getElementById('game-progress-badge').innerText = `Question ${currentQuestionIndex + 1}/${activeQuestions.length}`;
+            document.getElementById('question-category').innerText = q.category;
+            document.getElementById('question-illustration').innerText = q.illustration;
+            document.getElementById('question-text').innerText = q.text;
+
+            const progPct = ((currentQuestionIndex) / activeQuestions.length) * 100;
+            document.getElementById('game-progress-bar').style.width = progPct + '%';
+            document.getElementById('current-score').innerText = score;
+
+            const fbBox = document.getElementById('feedback-box');
+            fbBox.classList.add('hidden');
+            fbBox.innerHTML = '';
+
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+
+            const opts = [...q.options].sort(() => Math.random() - 0.5);
+            opts.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'bg-slate-50 hover:bg-emerald-50 border-2 border-slate-200 hover:border-emerald-500 text-slate-800 font-bold text-xl py-4 rounded-2xl transition shadow-sm';
+                btn.innerText = opt;
+                btn.onclick = () => handleAnswer(opt, q.correct, q.socraticHint);
+                grid.appendChild(btn);
+            });
+
+            if (currentDifficulty === 'easy') {
+                document.getElementById('timer-box').classList.add('hidden');
+            } else {
+                document.getElementById('timer-box').classList.remove('hidden');
+                timeLeft = currentDifficulty === 'medium' ? 15 : 10;
+                document.getElementById('timer-display').innerText = timeLeft;
+                clearInterval(timerInterval);
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    document.getElementById('timer-display').innerText = timeLeft;
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        handleAnswer('', q.correct, "Time's up! " + q.socraticHint);
+                    }
+                }, 1000);
+            }
+        }
+
+        function readCurrentQuestion() {
+            const q = activeQuestions[currentQuestionIndex];
+            playTTS(q.text.replace('_____', 'blank'));
+        }
+
+        function handleAnswer(selected, correct, hint) {
+            clearInterval(timerInterval);
+            const grid = document.getElementById('options-grid');
+            const buttons = grid.querySelectorAll('button');
+            buttons.forEach(b => b.disabled = true);
+
+            const fbBox = document.getElementById('feedback-box');
+            fbBox.classList.remove('hidden');
+
+            if (selected === correct) {
+                playSound('success');
+                score += 10;
+                totalStars += 1;
+                document.getElementById('header-stars').innerText = totalStars;
+                document.getElementById('current-score').innerText = score;
+
+                fbBox.className = "p-4 rounded-2xl border bg-emerald-50 border-emerald-200 text-emerald-900 text-sm animate-fade-in flex items-center justify-between";
+                fbBox.innerHTML = `<div><strong class="font-bold">Fantastic! 🎉</strong> Sally the Snake approves!</div> <button onclick="nextQuestion()" class="bg-emerald-600 text-white px-4 py-2 rounded-xl font-bold text-xs shadow hover:bg-emerald-700 transition">Next ➡️</button>`;
+                playTTS("Fantastic! Sally the Snake approves!");
+            } else {
+                playSound('retry');
+                fbBox.className = "p-4 rounded-2xl border bg-amber-50 border-amber-200 text-amber-900 text-sm animate-fade-in space-y-2";
+                fbBox.innerHTML = `<div><strong class="font-bold">Not quite! 🤔</strong> <span class="block mt-1">${hint}</span></div><button onclick="nextQuestion()" class="bg-amber-600 text-white px-4 py-2 rounded-xl font-bold text-xs shadow hover:bg-amber-700 transition">Try Next Question ➡️</button>`;
+                playTTS("Not quite! Let's think about it. " + hint);
+            }
+        }
+
+        function nextQuestion() {
+            playSound('click');
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+
+        function endGame() {
+            document.getElementById('game-play').classList.add('hidden');
+            document.getElementById('game-complete').classList.remove('hidden');
+
+            const maxScore = activeQuestions.length * 10;
+            document.getElementById('final-score-val').innerText = `${score}/${maxScore}`;
+            document.getElementById('final-stars-val').innerText = `⭐ +${activeQuestions.length}`;
+            totalStars += activeQuestions.length;
+            document.getElementById('header-stars').innerText = totalStars;
+
+            playTTS("Mission accomplished! Great job completing the verb challenge!");
+        }
+
+        function resetGame() {
+            playSound('click');
+            document.getElementById('game-complete').classList.add('hidden');
+            document.getElementById('game-setup').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
